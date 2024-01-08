@@ -1,3 +1,4 @@
+"use strict";
 const addMovieBtn = document.getElementById("add-movie-btn");
 const searchBtn = document.getElementById("search-btn");
 
@@ -21,11 +22,11 @@ const renderMovies = (filter = "") => {
   filteredMovies.forEach((movie) => {
     const movieEl = document.createElement("li");
 
-    const {info} = movie;
-    let {getFormattedTitle} = movie;
-    getFormattedTitle = getFormattedTitle.bind(movie)
+    const { info } = movie;
+    let { getFormattedTitle } = movie;
+    // getFormattedTitle = getFormattedTitle.bind(movie)
 
-    let text = movie.getFormattedTitle() + " - ";
+    let text = movie.getFormattedTitle.call(movie) + " - ";
     for (const key in info) {
       if (key !== "title") {
         text = text + `${key}: ${info[key]}`;
@@ -55,10 +56,10 @@ const addMovieHandler = () => {
       [extraName]: extraValue,
     },
     id: Math.random(),
-    getFormattedTitle(){
-      console.log(this)
+    getFormattedTitle() {
+      console.log(this);
       return this.info.title.toUpperCase();
-    }
+    },
   };
 
   movies.push(newMovie);
@@ -72,3 +73,14 @@ const searchMovieHandler = () => {
 
 addMovieBtn.addEventListener("click", addMovieHandler);
 searchBtn.addEventListener("click", searchMovieHandler);
+
+const person = {
+  name: "Max",
+  greet() {
+    console.log(this); // ???
+    console.log(this.name);
+  },
+};
+
+const { greet } = person;
+greet.call(person);
